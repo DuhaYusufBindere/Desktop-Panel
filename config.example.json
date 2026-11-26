@@ -1,0 +1,13 @@
+{
+  "port": 7777,
+  "lat": null,
+  "lon": null,
+  "city": "",
+  "icsUrl": "",
+  "lhmUrl": "http://localhost:8085/data.json",
+  "alerts": true,
+  "actions": [
+    { "id": "lock", "label": "Kilitle", "icon": "lock", "cmd": "rundll32.exe user32.dll,LockWorkStation" },
+    { "id": "code", "label": "VS Code", "icon": "note", "cmd": "code ." }
+  ]
+}

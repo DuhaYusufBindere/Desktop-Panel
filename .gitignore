@@ -1,0 +1,14 @@
+# Kişisel ayarlar ve veriler — asla paylaşılmaz
+config.json
+data/
+*.log
+
+# Ses servisi: Python ortamı ve indirilen modeller (büyük, her bilgisayarda yeniden kurulur)
+voice/.venv/
+voice/models/
+__pycache__/
+
+node_modules/
+.claude/
+.DS_Store
+Thumbs.db

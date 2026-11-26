@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#09080a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest" crossorigin="use-credentials">
+<link rel="icon" href="icon.svg">
+<link rel="stylesheet" href="app.css">
+<title>Masa Paneli</title>
+</head>
+<body data-theme="amber">
+
+<!-- ortam ışığı -->
+<div id="bg" aria-hidden="true"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><i class="grain"></i><i class="vig"></i></div>
+
+<!-- paylaşılan degradeler -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gAcc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" class="s1"/><stop offset="1" class="s2"/></linearGradient>
+    <linearGradient id="gSage" x1="0" y1="0" x2="1" y2="1"><stop offset="0" class="s3"/><stop offset="1" class="s1"/></linearGradient>
+  </defs>
+</svg>
+
+<header class="top">
+  <div class="tl">
+    <button class="ib" id="gear" aria-label="Ayarlar"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg></button>
+    <button class="ib mic" id="micBtn" aria-label="Jarvis"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21"/></svg><span class="halo"></span></button>
+  </div>
+  <button class="status" id="status"><i></i><span id="stxt">bağlanıyor</span></button>
+</header>
+
+<main class="pages" id="pages">
+
+  <!-- PANEL -->
+  <section class="page p-panel" data-id="panel" data-name="Panel">
+    <div class="hero rv">
+      <div class="date" id="date"></div>
+      <div class="clock" id="clock"></div>
+      <div class="minbar"><i id="minbar"></i></div>
+    </div>
+    <div class="hcards">
+      <div class="card wxc rv"><div class="wxi" id="wxIcon"></div><div class="wxt"><b id="wxT">--°</b><span id="wxC">Hava durumu</span></div></div>
+      <div class="card nxc rv" id="nxCard"><span class="lab">Sıradaki</span><b id="nxT">Takvim boş</b><span class="nxs" id="nxS"></span></div>
+    </div>
+    <div class="side">
+      <div class="card gauges rv">
+        <div class="g"><canvas id="gCpu"></canvas><div class="v"><b id="cpuV">0<i>%</i></b><small>İşlemci</small></div></div>
+        <div class="g"><canvas id="gMem"></canvas><div class="v"><b id="memV">0<i>%</i></b><small id="memS">Bellek</small></div></div>
+      </div>
+      <div class="card spark rv"><span class="lab">İşlemci · son 60 sn</span><canvas id="spark"></canvas></div>
+      <div class="chips rv">
+        <div class="chip"><svg class="mring" viewBox="0 0 40 40"><circle class="tr" cx="20" cy="20" r="15"/><circle class="fg" id="diskRing" cx="20" cy="20" r="15"/></svg><div><span class="lab">Disk</span><b id="diskT">–</b></div></div>
+        <div class="chip"><div><span class="lab">Ağ ↓</span><b id="netT">–</b></div></div>
+        <div class="chip"><div><span class="lab">Açık</span><b id="upT">–</b></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DONANIM -->
+  <section class="page p-hw" data-id="hw" data-name="Donanım">
+    <div class="nets">
+      <div class="card net rv"><div class="nh"><span class="lab">İndirme</span><span class="arw dn">↓</span></div><b id="nDown">0<small>KB/s</small></b><canvas id="sDown"></canvas></div>
+      <div class="card net rv"><div class="nh"><span class="lab">Yükleme</span><span class="arw up">↑</span></div><b id="nUp">0<small>KB/s</small></b><canvas id="sUp"></canvas></div>
+    </div>
+    <div class="tiles">
+      <div class="card tile na rv" id="tGl"><span class="lab">Ekran kartı</span><b>—</b><small></small><svg class="mring" viewBox="0 0 40 40"><circle class="tr" cx="20" cy="20" r="15"/><circle class="fg" cx="20" cy="20" r="15"/></svg></div>
+      <div class="card tile na rv" id="tGt"><span class="lab">GPU sıcaklık</span><b>—</b><small></small><svg class="mring" viewBox="0 0 40 40"><circle class="tr" cx="20" cy="20" r="15"/><circle class="fg" cx="20" cy="20" r="15"/></svg></div>
+      <div class="card tile na rv" id="tCt"><span class="lab">CPU sıcaklık</span><b>—</b><small></small><svg class="mring" viewBox="0 0 40 40"><circle class="tr" cx="20" cy="20" r="15"/><circle class="fg" cx="20" cy="20" r="15"/></svg></div>
+      <div class="card tile na rv" id="tFn"><span class="lab">Fan</span><b>—</b><small></small><svg class="mring" viewBox="0 0 40 40"><circle class="tr" cx="20" cy="20" r="15"/><circle class="fg" cx="20" cy="20" r="15"/></svg></div>
+    </div>
+    <p class="hint" id="hwHint"></p>
+  </section>
+
+  <!-- ÇALIYOR -->
+  <section class="page p-media" data-id="media" data-name="Çalıyor">
+    <div class="mbg" aria-hidden="true"><img id="artBg" alt=""></div>
+    <div class="art rv" id="art"><img id="artImg" alt=""><div class="ph"><svg viewBox="0 0 24 24"><path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg></div></div>
+    <div class="np">
+      <div class="srcrow rv"><span class="eq" id="eq"><i></i><i></i><i></i><i></i></span><span class="lab" id="npApp">Bilgisayar</span></div>
+      <h2 id="npTitle" class="rv">Çalan bir şey yok</h2>
+      <p id="npArtist" class="rv">&nbsp;</p>
+      <div class="prog rv"><i id="npBar"></i></div>
+      <div class="times rv"><span id="npPos">0:00</span><span id="npDur">0:00</span></div>
+      <div class="pad rv">
+        <button class="k" data-k="prev" aria-label="Önceki"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+        <button class="k big" data-k="playpause" aria-label="Oynat / duraklat"><svg viewBox="0 0 24 24" id="ppIcon"><path d="M7 4.5v15l12-7.5z"/></svg></button>
+        <button class="k" data-k="next" aria-label="Sonraki"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+        <div class="vol">
+          <button class="k sm" data-k="voldown" aria-label="Sesi kıs"><svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9.5a4 4 0 010 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <button class="k sm" data-k="mute" aria-label="Sessiz"><svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <button class="k sm" data-k="volup" aria-label="Sesi aç"><svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9a5 5 0 010 6M18.5 6.5a8.5 8.5 0 010 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ODAK -->
+  <section class="page p-focus" data-id="focus" data-name="Odak">
+    <div class="ring rv" id="ring">
+      <svg viewBox="0 0 200 200"><g id="ticks"></g><circle class="tr" cx="100" cy="100" r="80"/><circle class="pr" id="pr" cx="100" cy="100" r="80"/></svg>
+      <div class="tm"><div class="pclock" id="pt"></div><small id="pl">Odak</small></div>
+    </div>
+    <div class="fside">
+      <div class="seg rv" id="seg"><button data-m="25" class="on">ODAK</button><button data-m="5">MOLA</button><button data-m="15">UZUN</button></div>
+      <div class="btnrow rv"><button class="btn main" id="pgo">Başlat</button><button class="btn" id="prs">Sıfırla</button></div>
+      <div class="card stats rv"><div class="count">Bugün <b id="pc">0</b> tur · <b id="pm">0</b> dk</div><div class="week" id="week"></div></div>
+    </div>
+  </section>
+
+  <!-- GÜN -->
+  <section class="page p-day" data-id="day" data-name="Gün">
+    <div class="card col rv">
+      <h3>Takvim <span class="sub" id="calSub"></span></h3>
+      <div class="scroll" id="events"></div>
+    </div>
+    <div class="card col rv">
+      <h3>Yapılacaklar <span class="sub" id="todoSub"></span></h3>
+      <form class="add" id="todoForm"><input id="todoIn" placeholder="Yeni iş" autocomplete="off" maxlength="140"><button aria-label="Ekle">+</button></form>
+      <div class="scroll" id="todos"></div>
+    </div>
+  </section>
+
+  <!-- ARAÇLAR -->
+  <section class="page p-tools" data-id="tools" data-name="Araçlar">
+    <div class="card col rv">
+      <h3>Hızlı eylemler</h3>
+      <div class="acts" id="acts"></div>
+    </div>
+    <div class="tcol">
+      <div class="card col rv">
+        <h3>Panoya gönder</h3>
+        <div class="cliprow"><textarea class="field" id="clipIn" placeholder="Telefondan yaz, bilgisayarın panosuna gelsin" maxlength="20000"></textarea><button class="btn main" id="clipGo">Gönder</button></div>
+      </div>
+      <div class="card col rv">
+        <h3>Bildirimler</h3>
+        <div class="notes" id="notes"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav class="dock" id="dock"><span class="ind" id="dockInd"></span></nav>
+<div class="toast" id="toast"></div>
+<div class="banner" id="banner"><b id="bnT"></b><span id="bnB"></span></div>
+
+<div class="wait" id="wait"><div class="orbw"><i></i><i></i><i></i></div><p id="waitTxt">Bilgisayar bekleniyor</p></div>
+<div class="saver" id="saver"><div class="drift"><b id="svT">00:00</b><span id="svN"></span></div></div>
+
+<!-- JARVIS -->
+<div class="jv" id="jv" aria-live="polite">
+  <button class="ib jvx" id="jvClose" aria-label="Kapat"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <div class="jvmain">
+    <div class="orb" id="orb"><i class="o1"></i><i class="o2"></i><i class="o3"></i><i class="core"></i></div>
+    <div class="jvcol">
+      <p class="jvs" id="jvState">Dinliyorum</p>
+      <p class="jvt" id="jvText"></p>
+      <div class="jvcard" id="jvCard"><div class="ic" id="jvIc"></div><div class="tx"><b id="jvTitle"></b><span id="jvSub"></span></div><button class="btn" id="jvUndo">Geri al</button></div>
+      <p class="jvhint" id="jvHint"></p>
+    </div>
+  </div>
+  <form class="jvin" id="jvForm"><input id="jvIn" autocomplete="off" placeholder="ya da yaz: yarın 15'te diş randevusu ekle"><button aria-label="Gönder">→</button></form>
+</div>
+
+<div class="sheet" id="sheet">
+  <header><h1>Ayarlar</h1><button class="btn" id="sheetClose">Kapat</button></header>
+  <div class="grid">
+    <div>
+      <div class="set"><span class="lab">Tema</span><div class="seg" id="segTheme"><button data-v="auto">OTOMATİK</button><button data-v="amber">KEHRİBAR</button><button data-v="ice">BUZ</button><button data-v="paper">KÂĞIT</button></div><span class="note">Otomatik: gündüz buz mavisi, gün batımından sonra sıcak kehribar.</span></div>
+      <div class="set"><span class="lab">Konum (hava durumu)</span><div class="seg" id="segGeo"><button data-v="server">SUNUCU</button><button data-v="phone">TELEFON</button></div><span class="note" id="geoNote"></span></div>
+      <div class="set"><span class="lab">Parlaklık <span id="brV"></span></span><input type="range" id="bright" min="25" max="100" step="5"></div>
+      <div class="pg"><span>Ortam ışığına göre ayarla</span><button class="sw" id="swAmb"></button></div>
+      <div class="pg"><span>Performans modu <small class="note">(eski telefonlar için efektleri azaltır)</small></span><button class="sw" id="swLite"></button></div>
+      <div class="set"><span class="lab">Ekran koruyucu</span><div class="seg" id="segSaver"><button data-v="0">KAPALI</button><button data-v="2">2 DK</button><button data-v="5">5 DK</button><button data-v="10">10 DK</button></div></div>
+      <button class="btn" id="fsBtn">Tam ekran</button>
+    </div>
+    <div>
+      <div class="set"><span class="lab">Jarvis</span>
+        <div class="pg"><span>“Hey Jarvis” ile uyandır</span><button class="sw" id="swWake"></button></div>
+        <div class="pg"><span>Sesli yanıt ver</span><button class="sw" id="swTts"></button></div>
+        <span class="note" id="jvNote"></span>
+      </div>
+      <div class="set"><span class="lab">Sayfalar</span><div id="pgList"></div></div>
+      <div class="set"><span class="lab">Bilgisayarlar</span><div id="pcList"></div>
+        <form class="add" id="pcForm"><input id="pcIn" placeholder="Eşleştirme bağlantısı yapıştır" autocomplete="off"><button aria-label="Ekle">+</button></form>
+        <span class="note">Diğer bilgisayarda <b>/pair</b> sayfasındaki bağlantıyı buraya yapıştır. Üst köşedeki ada dokunarak bilgisayarlar arasında geçiş yaparsın.</span></div>
+    </div>
+  </div>
+</div>
+
+<script src="jarvis-core.js"></script>
+<script src="app.js"></script>
+<script src="jarvis.js"></script>
+</body>
+</html>
